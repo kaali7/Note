@@ -3,22 +3,36 @@
     BoxLayout:
         orientation:"vertical"
 
-        BoxLayout:
+        MDCard:
             orientation: 'horizontal'
+            spacing:5
+            background_color:rgba("#0B0B03")
+            padding:[10,0]
+            size_hint_y: None
+            height: 40
 
-            Button:
-                text: "file"
+            canvas.before:
+                Color:
+                    rgba:rgba("#0f0f0f")
+            
+                RoundedRectangle:
+                    size: self.size[0], self.size[1]
+                    pos: self.pos
+                    radius: [20,20, 0,0]
+
+            But:
+                text:"file"
         
-            Button:
+            But:
                 text:"edit"
 
-            Button:
+            But:
                 text:"setting"
 
-            Button:
+            But:
                 text:"help"
+            
         
-
         TextInput:
             hint_text:"hola"
             color:rgba("#b3ff00") 
