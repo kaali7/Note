@@ -2,50 +2,96 @@
 <Main>:
     BoxLayout:
         orientation:"vertical"
+        spacing:5
 
         MDCard:
-            orientation: 'horizontal'
-            spacing:5
-            background_color:rgba("#0B0B03")
-            padding:[10,0]
-            size_hint_y: None
-            height: 40
-
+            orientation:"horizontal"
+            size_hint_y:None
+            height:50
+            md_bg_color: rgba("#101010")
+            padding:[20,0]
             canvas.before:
                 Color:
-                    rgba:rgba("#0f0f0f")
+                    rgba:rgba("#090909")
             
                 RoundedRectangle:
                     size: self.size[0], self.size[1]
                     pos: self.pos
-                    radius: [20,20, 0,0]
-
-            But:
-                id:file
-                text:"[size=16][b]File[/b][/size]"
-                markup:True
-                font_name:'Comic'
-                on_release: root.file_menu(self)
-        
-            But:
-                id:edit
-                text:"[size=16][b]Edit[/b][/size]"
-                markup:True
-                font_name:'Comic'
-                on_release: root.edit_menu(self)
-
-            But:
-                id:help
-                text:"[size=16][b]Help[/b][/size]"
-                markup:True
-                font_name:'Comic'
-                on_release: root.help_menu(self)
+                    radius: [5,5,20,20]
             
+            MDLabel:
+                text: "file :  [b]note.txt[/b]"
+                markup:True
+                font_size:23
+                font_name:"Comic"
+                background_color:rgba("#C0C0C0")
+
+            Save_but:
+                text: '[b]save[/b]'
+                markup:True
+                font_size:20
+                font_name:"Comic"
+                size_hint: None,None
+                size: 100,35
+                background_color:0,0,0,0
+                pos_hint: {'center_y': 0.5}
+                opacity: 0.5
+                  
+                canvas.before:
+                    Color:
+                        rgba:rgba("#7B68EE")
+                
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [15,15]
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            MDCard:
+                orientation: 'horizontal'
+                spacing:5
+                padding:[10,0]
+                size_hint_y: None
+                height: 40
+                md_bg_color: rgba("#101010")
+
+                canvas.before:
+                    Color:
+                        rgba:rgba("#090909")
+                
+                    RoundedRectangle:
+                        size: self.size[0], self.size[1]
+                        pos: self.pos
+                        radius: [20,20, 0,0]
+    
+                But:
+                    id:file
+                    text:"[size=16][b]File[/b][/size]"
+                    markup:True
+                    font_name:'Comic'
+                    on_release: root.file_menu(self)
+            
+                But:
+                    id:edit
+                    text:"[size=16][b]Edit[/b][/size]"
+                    markup:True
+                    font_name:'Comic'
+                    on_release: root.edit_menu(self)
+    
+                But:
+                    id:help
+                    text:"[size=16][b]Help[/b][/size]"
+                    markup:True
+                    font_name:'Comic'
+                    on_release: root.help_menu(self)
+                
         
-        TextInput:
-            background_color:rgba("#0f0f0f")
-            foreground_color: rgba("#4BD02F")
-            font_size:20
-            font_name:'Comic'
-            cursor_color:rgba("#708090")
-            cursor_width:2.3
+            TextInput:
+                background_color:rgba("#0f0f0f")
+                foreground_color: rgba("#4BD02F")
+                font_size:20
+                font_name:'Comic'
+                cursor_color:rgba("#708090")
+                cursor_width:2.3

@@ -36,6 +36,10 @@ class But(Button, HoverBehavior):
 
         self.canvas.before.clear()
     
+#save button
+class Save_but(Button, HoverBehavior):
+    pass
+
 
 #Screen
 class Main(Screen):
@@ -78,7 +82,7 @@ class Main(Screen):
             items = menu_items,
             width_mult = 2,
             radius = [8,24,24,24],
-            max_height = 230
+            max_height = 250
         )
 
         self.menu_file.open()
@@ -128,7 +132,7 @@ class Main(Screen):
             items = menu_items,
             width_mult = 2.3,
             radius = [8,24,24,24],
-            max_height = 230
+            max_height = 250
         )
 
         self.menu_edit.open()
@@ -157,7 +161,7 @@ class Main(Screen):
             items = menu_items,
             width_mult = 2.3,
             radius = [8,24,24,24],
-            max_height = 130
+            max_height = 150
         )
 
         self.menu_help.open()
