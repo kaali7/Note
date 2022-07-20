@@ -6,6 +6,7 @@ from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from kivymd.uix.behaviors import HoverBehavior
 from kivy.uix.button import Button
 from kivy.graphics import Color , RoundedRectangle
+from kivymd.uix.menu import MDDropdownMenu
 
 #window size
 Window.size = (630,450)
@@ -28,7 +29,7 @@ class But(Button, HoverBehavior):
     def on_enter(self):
        
         with self.canvas.before:
-            Color(0,0,0,0.8)
+            Color(0,0,0,0.6)
             RoundedRectangle(size=(80,32), pos= self.pos, radius=(15,15))
     
     def on_leave(self):
@@ -38,7 +39,129 @@ class But(Button, HoverBehavior):
 
 #Screen
 class Main(Screen):
-    pass
+
+    def file_menu(self, btn):
+
+        menu_items = [
+            {
+                'text':'[b]new file[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='file':print("new file")
+            },
+            {
+                'text':'[b]save[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='save':print("save")
+            },
+            {
+                'text':'[b]save as[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='save as':print("save as")
+            },
+            {
+                'text':'exit',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='exit':print("exit")
+            }
+        ]
+
+        self.menu_file = MDDropdownMenu(
+            caller = btn,
+            items = menu_items,
+            width_mult = 2,
+            radius = [8,24,24,24],
+            max_height = 230
+        )
+
+        self.menu_file.open()
+
+    def edit_menu(self, btn):
+        
+        menu_items = [
+            {
+                'text':'[b]find[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='find':print("find")
+            },
+            {
+                'text':'[b]replace[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='replace':print("replace")
+            },
+            {
+                'text':'[b]taskbar[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='taskbar':print("taskbar")
+            },
+            {
+                'text':'[b]theme[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='theme':print("theme")
+            },
+            {
+                'text':'[b]setting[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='setting':print("setting")
+            },
+        ]
+
+        self.menu_edit = MDDropdownMenu(
+            caller = btn,
+            items = menu_items,
+            width_mult = 2.3,
+            radius = [8,24,24,24],
+            max_height = 230
+        )
+
+        self.menu_edit.open()
+    
+    def help_menu(self, btn):
+
+        menu_items =  [
+            {
+                'text':'[b]short cut[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='short cut':print("short cut")
+            },
+            {
+                'text':'[b]help[/b]',
+                'viewclass':'OneLineListItem',
+                'height':45,
+                'font_size':15,
+                'on_release':lambda x='help':print("new file")
+            },
+        ]
+
+        self.menu_help = MDDropdownMenu(
+            caller = btn,
+            items = menu_items,
+            width_mult = 2.3,
+            radius = [8,24,24,24],
+            max_height = 130
+        )
+
+        self.menu_help.open()
+
 
 #main app
 class Note(MDApp):

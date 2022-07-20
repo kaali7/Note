@@ -21,19 +21,31 @@
                     radius: [20,20, 0,0]
 
             But:
-                text:"file"
+                id:file
+                text:"[size=16][b]File[/b][/size]"
+                markup:True
+                font_name:'Comic'
+                on_release: root.file_menu(self)
         
             But:
-                text:"edit"
+                id:edit
+                text:"[size=16][b]Edit[/b][/size]"
+                markup:True
+                font_name:'Comic'
+                on_release: root.edit_menu(self)
 
             But:
-                text:"setting"
-
-            But:
-                text:"help"
+                id:help
+                text:"[size=16][b]Help[/b][/size]"
+                markup:True
+                font_name:'Comic'
+                on_release: root.help_menu(self)
             
         
         TextInput:
             background_color:rgba("#0f0f0f")
             foreground_color: rgba("#4BD02F")
-            font_size:15
+            font_size:20
+            font_name:'Comic'
+            cursor_color:rgba("#708090")
+            cursor_width:2.3
