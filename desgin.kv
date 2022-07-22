@@ -1,3 +1,10 @@
+#dialog
+
+<About_Note_Con>:
+    Label:
+        text: "hola! i am in about page"
+
+
 #desgin file
 <Main>:
     BoxLayout:
@@ -9,7 +16,8 @@
             size_hint_y:None
             height:50
             md_bg_color: rgba("#101010")
-            padding:[20,0]
+            padding:[40,0]
+        
             canvas.before:
                 Color:
                     rgba:rgba("#090909")
@@ -19,12 +27,19 @@
                     pos: self.pos
                     radius: [5,5,20,20]
             
-            MDLabel:
+            Button:
+                id:note_title
                 text: "file :  [b]note.txt[/b]"
                 markup:True
                 font_size:23
                 font_name:"Comic"
-                background_color:rgba("#C0C0C0")
+                size_hint:None,None
+                size:200,50
+                pos_hint: {'center_y': 0.5}
+                background_color:0,0,0,0
+                on_release:root.popup_title()
+
+            MDLabel:
 
             Save_but:
                 text: '[b]save[/b]'

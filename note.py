@@ -1,4 +1,5 @@
 #import 
+from turtle import onclick, title
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -7,6 +8,9 @@ from kivymd.uix.behaviors import HoverBehavior
 from kivy.uix.button import Button
 from kivy.graphics import Color , RoundedRectangle
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+from kivy.uix.boxlayout import BoxLayout
 
 #window size
 Window.size = (630,450)
@@ -40,10 +44,61 @@ class But(Button, HoverBehavior):
 class Save_but(Button, HoverBehavior):
     pass
 
+class About_Note_Con(BoxLayout):
+    pass
+
+
 
 #Screen
 class Main(Screen):
 
+    dialog_title = None
+    dialog_short_cut = None
+    dialog_about_note = None
+    dialog_new_file = None
+    dialog_save_as = None
+    dialog_exit_note = None
+    dialog_find_word = None
+    dialog_replace_word = None
+    dialog_taskbar = None
+    dialog_setting = None
+
+
+    #change title and close popup 
+    def title_change(self, btn):
+        self.ids.note_title.text = "user"+".txt"
+        self.dialog_title.dismiss()
+     
+    # close title popup 
+    def close_title(self, btn):
+        self.dialog_title.dismiss()
+
+    #title change
+    def popup_title(self):
+
+        if not self.dialog_title:
+            self.dialog_title = MDDialog(
+                title = "Change Title",
+                text = "title change",
+                type = 'custom',
+                buttons = [
+                    MDFlatButton(
+                        text =  "cancel",
+                        on_release = self.close_title
+                    ),
+                    MDFlatButton(
+                        text = "save",
+                        on_release = self.title_change
+                    )
+                ]
+
+            )
+        
+        self.dialog_title.open()
+     
+    #-------------------------File option------------------------#
+
+    #file management option
     def file_menu(self, btn):
 
         menu_items = [
@@ -52,28 +107,21 @@ class Main(Screen):
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='file':print("new file")
-            },
-            {
-                'text':'[b]save[/b]',
-                'viewclass':'OneLineListItem',
-                'height':45,
-                'font_size':15,
-                'on_release':lambda x='save':print("save")
+                'on_release':lambda x='file':self.new_file()
             },
             {
                 'text':'[b]save as[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='save as':print("save as")
+                'on_release':lambda x='save as':self.save_as()
             },
             {
                 'text':'exit',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='exit':print("exit")
+                'on_release':lambda x='exit':self.exit_note()
             }
         ]
 
@@ -87,6 +135,121 @@ class Main(Screen):
 
         self.menu_file.open()
 
+    #save file and create new file     #isssue -----@@@@@@@55-
+    def new_file_save(self, btn):
+ 
+        self.dialog_new_file.dismiss()
+    
+    #don't save file and create new file
+    def new_file_dont_save(self, btn):    #smalll issue --@#%^&*()
+        
+        self.dialog_new_file.dismiss()
+
+    #cancel to create new file
+    def new_file_cancel(self, btn):
+        self.dialog_new_file.dismiss()
+
+    #to create new file 
+    def new_file(self):
+
+        if not self.dialog_new_file:
+            self.dialog_new_file = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = "save",
+                        on_release = self.new_file_save
+                    ),
+                    MDFlatButton(
+                        text = 'don\'t save',
+                        on_release = self.new_file_dont_save
+                    ),
+                    MDFlatButton(
+                        text = 'cancel',
+                        on_release = self.new_file_cancel
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_new_file.open()
+
+    def save_as_ok(self, btn):
+        self.dialog_save_as.dismiss()
+
+    #to save the file in any dir
+    def save_as(self):     #issue ------------ @#%^&*()
+        
+        if not self.dialog_save_as:
+            self.dialog_save_as = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = 'ok',
+                        on_release = self.save_as_ok
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_save_as.open()
+    
+
+    #save and exit from app
+    def exit_save(self, btn):     #issue---------------!@#%^&
+        
+        self.dialog_exit_note.dismiss()
+
+        MDApp.get_running_app().stop()
+        Window.close()
+
+    #don't save and exit from app
+    def exit_dont_save(self, btn):  #issue -----------%^&*
+        
+        self.dialog_exit_note.dismiss()
+
+        MDApp.get_running_app().stop()
+        Window.close()
+    
+    def exit_cancel(self, btn): #issue----------@#%^&
+
+        self.dialog_exit_note.dismiss()
+
+    #exit a note
+    def exit_note(self):
+
+        if not self.dialog_exit_note:
+            self.dialog_exit_note = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = "save",
+                        on_release = self.exit_save
+                    ),
+                    MDFlatButton(
+                        text = 'don\'t save',
+                        on_release = self.exit_dont_save
+                    ),
+                    MDFlatButton(
+                        text = 'cancel',
+                        on_release = self.exit_cancel
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_exit_note.open()
+
+
+    #-------------------------Edit option------------------------#
+
+    #edit to note option
     def edit_menu(self, btn):
         
         menu_items = [
@@ -95,35 +258,28 @@ class Main(Screen):
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='find':print("find")
+                'on_release':lambda x='find':self.find_word()
             },
             {
                 'text':'[b]replace[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='replace':print("replace")
+                'on_release':lambda x='replace':self.replace_word()
             },
             {
                 'text':'[b]taskbar[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='taskbar':print("taskbar")
-            },
-            {
-                'text':'[b]theme[/b]',
-                'viewclass':'OneLineListItem',
-                'height':45,
-                'font_size':15,
-                'on_release':lambda x='theme':print("theme")
+                'on_release':lambda x='taskbar':self.taskbar()
             },
             {
                 'text':'[b]setting[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='setting':print("setting")
+                'on_release':lambda x='setting':self.setting()
             },
         ]
 
@@ -137,6 +293,95 @@ class Main(Screen):
 
         self.menu_edit.open()
     
+    def find_save(self, btn):
+        self.dialog_find_word.dismiss()
+
+    #find word in passage
+    def find_word(self):
+
+        if not self.dialog_find_word:
+            self.dialog_find_word = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = 'save',
+                        on_release = self.find_save
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_find_word.open()
+
+    def replace_save(self, btn):
+        self.dialog_replace_word.dismiss()
+    
+    #replace word in passage
+    def replace_word(self):
+
+        if not self.dialog_replace_word:
+            self.dialog_replace_word = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = 'save',
+                        on_release = self.replace_save
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_replace_word.open()
+
+    def taskbar_save(self, btn):
+        self.dialog_taskbar.dismiss()
+
+    #add the taskbar
+    def taskbar(self):
+        if not self.dialog_taskbar:
+            self.dialog_taskbar = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = 'save',
+                        on_release = self.taskbar_save
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_taskbar.open()
+    
+    def setting_save(self, btn):
+        self.dialog_setting.dismiss()
+
+    #setting for note
+    def setting(self):
+
+        if not self.dialog_setting:
+            self.dialog_setting = MDDialog(
+                title  = "New file",
+                type='custom',
+                buttons=[
+                    MDFlatButton(
+                        text = 'save',
+                        on_release = self.setting_save
+                    )
+                ]
+
+            )
+
+        #open dialog of new file
+        self.dialog_setting.open()
+
+
+    #-------------------------Help option------------------------#
     def help_menu(self, btn):
 
         menu_items =  [
@@ -145,14 +390,14 @@ class Main(Screen):
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='short cut':print("short cut")
+                'on_release':lambda x='short_cut':self.short_cut()
             },
             {
-                'text':'[b]help[/b]',
+                'text':'[b]about[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='help':print("new file")
+                'on_release':lambda x='about':self.about_note()
             },
         ]
 
@@ -165,10 +410,55 @@ class Main(Screen):
         )
 
         self.menu_help.open()
+     
+    # close short cut dialog 
+    def close_short_cut(self, btn):
+        self.dialog_short_cut.dismiss()
+
+    #show a all short cut in note
+    def short_cut(self):
+        
+        if not self.dialog_short_cut:
+            self.dialog_short_cut = MDDialog(
+                title="All Short Cut",
+                type="custom",
+                buttons=[ 
+                    MDFlatButton(
+                        text="ok",
+                        on_release=self.close_short_cut
+                    )
+                ]
+
+            )
+        
+        self.dialog_short_cut.open()
+
+    # close about note dialog 
+    def close_about_note(self, btn):
+        self.dialog_about_note.dismiss()
+
+    #show about note
+    def about_note(self):
+        
+        if not self.dialog_about_note:
+            self.dialog_about_note = MDDialog(
+                title='About Note',
+                type='custom',
+                content_cls=About_Note_Con(),
+                buttons = [
+                    MDFlatButton(
+                        text="ok",
+                        on_release=self.close_about_note
+                    )
+                ]
+            )
+
+        self.dialog_about_note.open()
 
 
 #main app
 class Note(MDApp):
+
     def build(self):
 
         # color theme of app
@@ -179,6 +469,36 @@ class Note(MDApp):
         self.sm.add_widget(Main(name="main"))
 
         return self.sm
+
+    # dialog_title = None
+
+    # def title_change(self, btn):
+    #     self.ids.note_title.text = "user"
+
+    # def close_title(self, btn):
+    #     self.dialog_title.dismiss()
+
+    # #title change
+    # def popup_title(self):
+    #     print("hola")
+        
+    #     if not self.dialog_title:
+    #         self.dialog_title = MDDialog(
+    #             title = "Change Title",
+    #             text = "title change",
+    #             # type = 'custom',
+    #             buttons = [
+    #                 MDFlatButton(
+    #                     text =  "cancel",
+    #                     on_release = self.close_title
+    #                 ),
+    #                 MDFlatButton(
+    #                     text = "save",
+    #                     on_release = self.title_change
+    #                 )
+    #             ]
+
+    #         )
 
 #run app
 App = Note()
