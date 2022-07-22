@@ -1,5 +1,5 @@
 #import 
-from turtle import onclick, title
+from turtle import onclick, title, width
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -9,7 +9,7 @@ from kivy.uix.button import Button
 from kivy.graphics import Color , RoundedRectangle
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from kivy.uix.boxlayout import BoxLayout
 
 #window size
@@ -44,6 +44,7 @@ class But(Button, HoverBehavior):
 class Save_but(Button, HoverBehavior):
     pass
 
+#dialog of about note
 class About_Note_Con(BoxLayout):
     pass
 
@@ -53,8 +54,6 @@ class About_Note_Con(BoxLayout):
 class Main(Screen):
 
     dialog_title = None
-    dialog_short_cut = None
-    dialog_about_note = None
     dialog_new_file = None
     dialog_save_as = None
     dialog_exit_note = None
@@ -62,6 +61,8 @@ class Main(Screen):
     dialog_replace_word = None
     dialog_taskbar = None
     dialog_setting = None
+    dialog_short_cut = None
+    dialog_about_note = None
 
 
     #change title and close popup 
@@ -444,9 +445,10 @@ class Main(Screen):
             self.dialog_about_note = MDDialog(
                 title='About Note',
                 type='custom',
+                size_hint = (0.5, 1),
                 content_cls=About_Note_Con(),
                 buttons = [
-                    MDFlatButton(
+                    MDFillRoundFlatButton(
                         text="ok",
                         on_release=self.close_about_note
                     )
@@ -469,36 +471,6 @@ class Note(MDApp):
         self.sm.add_widget(Main(name="main"))
 
         return self.sm
-
-    # dialog_title = None
-
-    # def title_change(self, btn):
-    #     self.ids.note_title.text = "user"
-
-    # def close_title(self, btn):
-    #     self.dialog_title.dismiss()
-
-    # #title change
-    # def popup_title(self):
-    #     print("hola")
-        
-    #     if not self.dialog_title:
-    #         self.dialog_title = MDDialog(
-    #             title = "Change Title",
-    #             text = "title change",
-    #             # type = 'custom',
-    #             buttons = [
-    #                 MDFlatButton(
-    #                     text =  "cancel",
-    #                     on_release = self.close_title
-    #                 ),
-    #                 MDFlatButton(
-    #                     text = "save",
-    #                     on_release = self.title_change
-    #                 )
-    #             ]
-
-    #         )
 
 #run app
 App = Note()
