@@ -1,5 +1,4 @@
 #import 
-from turtle import onclick, title, width
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -11,9 +10,13 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.scrollview import ScrollView
+# from kivy.config import Config
 
-#window size
+
+#window fix size
 Window.size = (630,450)
+# Config.set('graphics', 'resizable', False)
 
 #connected to desgin file
 Builder.load_file("desgin.kv")
@@ -48,6 +51,9 @@ class Save_but(Button, HoverBehavior):
 class About_Note_Con(BoxLayout):
     pass
 
+#dialog of short cut
+class Short_Cut_Con(ScrollView):
+    pass 
 
 
 #Screen
@@ -415,7 +421,7 @@ class Main(Screen):
     # close short cut dialog 
     def close_short_cut(self, btn):
         self.dialog_short_cut.dismiss()
-
+    
     #show a all short cut in note
     def short_cut(self):
         
@@ -423,8 +429,10 @@ class Main(Screen):
             self.dialog_short_cut = MDDialog(
                 title="All Short Cut",
                 type="custom",
+                size_hint = (0.7, 1),
+                content_cls=Short_Cut_Con(),
                 buttons=[ 
-                    MDFlatButton(
+                    MDFillRoundFlatButton(
                         text="ok",
                         on_release=self.close_short_cut
                     )
@@ -445,7 +453,7 @@ class Main(Screen):
             self.dialog_about_note = MDDialog(
                 title='About Note',
                 type='custom',
-                size_hint = (0.5, 1),
+                size_hint = (0.6, 0.4),
                 content_cls=About_Note_Con(),
                 buttons = [
                     MDFillRoundFlatButton(

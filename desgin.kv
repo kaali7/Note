@@ -1,24 +1,162 @@
 #dialog
 
-#dialog for about note
+#dialog of about note
 <About_Note_Con>:
     orientation: 'vertical'
     size_hint_y:None
-    height:130
-    padding:5
-    spacing:5
+    height:140
+    spacing:10
 
     Label:
         text: "[b]This Is About Note[/b]"
-        font_size:20
+        font_size:18
         font_name:"Comic"
         markup:True
+        size_hint_y:None
+        height:60
 
     Label:
         text: "[b]Appication Name[/b] : Note\n[b]Author of Note[/b] :  [size=17][b]Kaali[/b][/size]\n[b]Build date[/b] : 22-07-2022\n[b]About[/b] : Note is likely to notepad"
         markup:True
+    
+    Label:
 
 
+<Lab_short@Label>:
+    size_hint:None,None
+    size:60,30
+    markup:True
+    font_size:14
+
+<But_short@Button>:
+    size_hint:None,None
+    size:90,30
+    markup:True
+    font_size:15
+    font_name:'Comic'
+    background_color:0,0,0,0
+
+    canvas.before:
+        Color:
+            rgba:rgba('#101010')
+    
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [10,10]
+    
+
+#dialog of short cut
+<Short_Cut_Con>:
+    size_hint_y:None
+    height:150
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y:None
+        height:270
+        padding:5
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y:None
+            height:80
+            spacing:5
+
+            Label:
+
+            Lab_short:
+                text:'Short-Cut:'
+                pos_hint: {'center_y': 0.5}
+            But_short:
+                text:"[b]Shift+S[/b]"
+                pos_hint: {'center_y': 0.5}
+
+            Label:
+        
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing:10
+
+            GridLayout:
+                cols:2
+                spacing:7
+
+                Lab_short:
+                    text:"copy:"
+                But_short:
+                    text:"[b]Ctrl+C[/b]"
+                
+                Lab_short:
+                    text:"paste:"
+                But_short:
+                    text:"[b]Ctrl+V[/b]"
+                
+                Lab_short:
+                    text:"cut:"
+                But_short:
+                    text:"[b]Ctrl+X[/b]"
+                
+                Lab_short:
+                    text:"undo:"
+                But_short:
+                    text:"[b]Ctrl+Z[/b]"
+                
+                Lab_short:
+                    text:"setting:"
+                But_short:
+                    text:"[b] Ctrl+S[/b]"
+
+            Label:#create divide line 
+                size_hint_x:None
+                width:4
+                canvas:
+                    Color:
+                        rgba:rgba("#151515")
+            
+                    RoundedRectangle:
+                        size:self.size
+                        pos:self.pos
+                        radius:[3,3]
+                
+            GridLayout:
+                cols:2
+                spacing:7
+
+                Lab_short:
+                    text:"taskbar:"            
+                But_short:
+                    text:"[b]Shift+R[/b]"
+                
+                Lab_short:
+                    text:"find:"            
+                But_short:
+                    text:"[b]Ctrl+F[/b]"
+                
+                Lab_short:
+                    text:"replace:"            
+                But_short:
+                    text:"[b]Ctrl+R[/b]"
+
+                Lab_short:
+                    text:"save:"            
+                But_short:
+                    text:"[b]Tab+Q[/b]"
+                
+                Lab_short:
+                    text:"new:"            
+                But_short:
+                    text:"[b]Shift+N[/b]"
+
+
+
+    
+
+
+
+
+# sdfghjkl
 #desgin file
 <Main>:
     BoxLayout:
