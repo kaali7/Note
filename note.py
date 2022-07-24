@@ -11,15 +11,17 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
-# from kivy.config import Config
 
 
 #window fix size
 Window.size = (630,450)
-# Config.set('graphics', 'resizable', False)
+# Window.minimum_width, Window.minimum_height = Window.size
 
 #connected to desgin file
 Builder.load_file("desgin.kv")
+
+#main variable
+title_note = [0]
 
 #hover button
 class But(Button, HoverBehavior):
@@ -55,6 +57,12 @@ class About_Note_Con(BoxLayout):
 class Short_Cut_Con(ScrollView):
     pass 
 
+#dialog of title change
+class Title_Con(BoxLayout):
+    
+    def text_title(self, text):
+        title_note[0] = text
+    
 
 #Screen
 class Main(Screen):
@@ -73,7 +81,7 @@ class Main(Screen):
 
     #change title and close popup 
     def title_change(self, btn):
-        self.ids.note_title.text = "user"+".txt"
+        self.ids.note_title.text = f"{title_note[0]}.txt"
         self.dialog_title.dismiss()
      
     # close title popup 
@@ -86,8 +94,9 @@ class Main(Screen):
         if not self.dialog_title:
             self.dialog_title = MDDialog(
                 title = "Change Title",
-                text = "title change",
                 type = 'custom',
+                content_cls = Title_Con(),
+                size_hint=(0.4, 0.5),
                 buttons = [
                     MDFlatButton(
                         text =  "cancel",

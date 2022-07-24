@@ -21,7 +21,8 @@
     
     Label:
 
-
+#
+# dialog of short cut:button and label design 
 <Lab_short@Label>:
     size_hint:None,None
     size:60,30
@@ -150,7 +151,27 @@
                     text:"[b]Shift+N[/b]"
 
 
+#
+## dialog of title change
+<Title_Con>:
+    orientation: 'vertical'
+    size_hint_y:None
+    height:100
+    spacing:5
 
+    Label:
+        text:"Enter Your Title"
+        font_name:"Comic"
+        font_size:16
+        size_hint_y:None
+        height:60
+    
+    MDTextField:
+        hint_text: 'title'
+        font_size:20
+        max_text_length: 20
+        on_text:root.text_title(self.text)
+              
     
 
 
@@ -181,7 +202,7 @@
             
             Button:
                 id:note_title
-                text: "file :  [b]note.txt[/b]"
+                text: "[b]note.txt[/b]"
                 markup:True
                 font_size:23
                 font_name:"Comic"
