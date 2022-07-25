@@ -171,9 +171,7 @@
         font_size:20
         max_text_length: 20
         on_text:root.text_title(self.text)
-              
     
-
 
 
 
@@ -215,6 +213,7 @@
             MDLabel:
 
             Save_but:
+                id:but_save
                 text: '[b]save[/b]'
                 markup:True
                 font_size:20
@@ -224,6 +223,7 @@
                 background_color:0,0,0,0
                 pos_hint: {'center_y': 0.5}
                 opacity: 0.5
+                on_release: root.saving_text()
                   
                 canvas.before:
                     Color:
@@ -283,3 +283,4 @@
                 font_name:'Comic'
                 cursor_color:rgba("#708090")
                 cursor_width:2.3
+                on_text:root.color_save_btn(self.text)

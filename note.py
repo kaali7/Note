@@ -1,4 +1,5 @@
 #import 
+from fileinput import filename
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -12,6 +13,8 @@ from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 
+#os
+import os
 
 #window fix size
 Window.size = (630,450)
@@ -21,7 +24,7 @@ Window.size = (630,450)
 Builder.load_file("desgin.kv")
 
 #main variable
-title_note = [0]
+title_note_v = [0]
 
 #hover button
 class But(Button, HoverBehavior):
@@ -61,8 +64,7 @@ class Short_Cut_Con(ScrollView):
 class Title_Con(BoxLayout):
     
     def text_title(self, text):
-        title_note[0] = text
-    
+        title_note_v[0] = text
 
 #Screen
 class Main(Screen):
@@ -77,11 +79,98 @@ class Main(Screen):
     dialog_setting = None
     dialog_short_cut = None
     dialog_about_note = None
+    dialog_save_file = None
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+        os.chdir("D:\\sweety\\Git_learn\\project\\gui_project\\file_manager")
+
+        self.text_note = ''
+        self.title_note = ''
+
+    #---------------------------save-button------------------------#
+
+    # if wirte in note ,then color of save button is change  
+    def color_save_btn(self, text_btn):
+
+        self.text_note = text_btn
+
+        list_file = os.listdir()
+
+        if self.title_note in list_file:
+            with open(self.title_note, "r") as file:
+                text = file.read()
+                if text!=text_btn:
+                    self.ids.but_save.opacity = 1
+                else:
+                    self.ids.but_save.opacity = 0.5
+        else:
+            if len(self.text_note)!=0:
+                self.ids.but_save.opacity = 1
+            else:
+                self.ids.but_save.opacity = 0.5
+
+    def close_save_file(self, btn):
+
+        self.title_note = f"{title_note_v[0]}.txt"
+        self.ids.note_title.text = self.title_note
+
+        file = open(self.title_note, "a")
+        file.write(self.text_note)
+        self.text_note = ""
+        file.close()
+
+        self.ids.but_save.opacity = 0.5
+
+        self.dialog_save_file.dismiss()
+
+    def saving_text(self):
+
+        list_file = os.listdir()
+
+        if len(self.text_note) != 0:
+
+            if self.title_note in list_file:
+
+                with open(self.title_note, "a") as file:
+                    file.write(self.text_note)
+                    self.text_note = ''
+                    file.close()
+                
+                self.ids.but_save.opacity = 0.5
+                
+
+                
+            else:
+                
+                if not self.dialog_save_file:
+                    self.dialog_save_file = MDDialog(
+                        title = "Change Title",
+                        type = 'custom',
+                        content_cls = Title_Con(),
+                        size_hint=(0.4, 0.5),
+                        buttons = [
+                            MDFlatButton(
+                                text =  "save",
+                                on_release = self.close_save_file
+                            )
+                        ]
+
+                    )   
+
+                self.dialog_save_file.open()          
+
+        else:
+            print('Sorry!')
+            
+    #----------------------------title dialog-----------------------#
 
     #change title and close popup 
     def title_change(self, btn):
-        self.ids.note_title.text = f"{title_note[0]}.txt"
+
+        self.title_note = f"{title_note_v[0]}.txt"
+        self.ids.note_title.text = self.title_note
         self.dialog_title.dismiss()
      
     # close title popup 
@@ -152,8 +241,9 @@ class Main(Screen):
         self.menu_file.open()
 
     #save file and create new file     #isssue -----@@@@@@@55-
+
     def new_file_save(self, btn):
- 
+
         self.dialog_new_file.dismiss()
     
     #don't save file and create new file
@@ -171,7 +261,9 @@ class Main(Screen):
         if not self.dialog_new_file:
             self.dialog_new_file = MDDialog(
                 title  = "New file",
+                text = "do you want to save this?",
                 type='custom',
+                size_hint=(0.5,0.5),
                 buttons=[
                     MDFlatButton(
                         text = "save",
@@ -193,6 +285,8 @@ class Main(Screen):
         self.dialog_new_file.open()
 
     def save_as_ok(self, btn):
+        
+
         self.dialog_save_as.dismiss()
 
     #to save the file in any dir
@@ -475,6 +569,10 @@ class Main(Screen):
         self.dialog_about_note.open()
 
 
+#file manager
+class File_Manager(Screen):
+    pass
+
 #main app
 class Note(MDApp):
 
@@ -485,7 +583,9 @@ class Note(MDApp):
         self.theme_cls.primary_palette = "Gray"
         
         self.sm = ScreenManager(transition = NoTransition())
+
         self.sm.add_widget(Main(name="main"))
+        self.sm.add_widget(File_Manager(name='file'))
 
         return self.sm
 
