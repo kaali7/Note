@@ -171,11 +171,28 @@
         font_size:20
         max_text_length: 20
         on_text:root.text_title(self.text)
+
+#
+##dialog of replace word
+<Replace_Con>:
+    orientation: 'vertical'
+    size_hint_y:None
+    height:150
+    spacing:5
+    padding:10
     
+    MDTextField:
+        hint_text:"find word"
+        font_size:18
+        on_text:root.find_text(self.text)
+    
+    MDTextField:
+        hint_text:"replace word"
+        font_size:18
+        on_text:root.relplce_text(self.text)
 
 
-
-# sdfghjkl
+# 
 #desgin file
 <Main>:
     BoxLayout:

@@ -1,5 +1,8 @@
 #import 
+from dataclasses import replace
 from fileinput import filename
+from importlib.resources import contents
+from tkinter import dialog
 from venv import create
 from kivymd.app import MDApp
 from kivy.core.window import Window
@@ -26,6 +29,8 @@ Builder.load_file("desgin.kv")
 
 #main variable
 title_note_v = [0]
+find_text_note = [0]
+replace_text_note = [0]
 
 #hover button
 class But(Button, HoverBehavior):
@@ -66,6 +71,16 @@ class Title_Con(BoxLayout):
     
     def text_title(self, text):
         title_note_v[0] = text
+
+# dialog of replace word 
+class Replace_Con(BoxLayout):
+    
+    def find_text(self, text):
+        find_text_note[0] = text
+
+    def relplce_text(self, text):
+        replace_text_note[0] = text
+
 
 #Screen
 class Main(Screen):
@@ -481,6 +496,8 @@ class Main(Screen):
 
         self.menu_edit.open()
     
+    #-------------------------Edit >> find------------------------#
+
     def find_save(self, btn):
         self.dialog_find_word.dismiss()
 
@@ -502,21 +519,41 @@ class Main(Screen):
 
         #open dialog of new file
         self.dialog_find_word.open()
-
+    
+    #-------------------------Edit >> replace------------------------#
+    
     def replace_save(self, btn):
+
+        find = find_text_note[0]
+        repl = replace_text_note[0]
+
+        new_text = self.text_note.replace(find, repl)
+
+        self.text_note = new_text
+        self.ids.note_input.text = self.text_note
+
         self.dialog_replace_word.dismiss()
     
+    def replace_cancel(self, btn):
+        self.dialog_replace_word.dismiss()
+
     #replace word in passage
     def replace_word(self):
 
         if not self.dialog_replace_word:
             self.dialog_replace_word = MDDialog(
-                title  = "New file",
+                title  = "Replace Word",
                 type='custom',
+                content_cls = Replace_Con(),
+                size_hint = (0.5,0.5),
                 buttons=[
                     MDFlatButton(
                         text = 'save',
                         on_release = self.replace_save
+                    ),
+                    MDFlatButton(
+                        text = 'cancel',
+                        on_release = self.replace_cancel
                     )
                 ]
 
@@ -524,6 +561,8 @@ class Main(Screen):
 
         #open dialog of new file
         self.dialog_replace_word.open()
+    
+    #-------------------------Edit >> taskbar------------------------#
 
     def taskbar_save(self, btn):
         self.dialog_taskbar.dismiss()
@@ -546,6 +585,8 @@ class Main(Screen):
         #open dialog of new file
         self.dialog_taskbar.open()
     
+    #-------------------------Edit >> setting------------------------#
+
     def setting_save(self, btn):
         self.dialog_setting.dismiss()
 
@@ -567,7 +608,6 @@ class Main(Screen):
 
         #open dialog of new file
         self.dialog_setting.open()
-
 
     #-------------------------Help option------------------------#
     def help_menu(self, btn):
@@ -599,6 +639,8 @@ class Main(Screen):
 
         self.menu_help.open()
      
+    #-------------------------Help >> short cut------------------------#
+
     # close short cut dialog 
     def close_short_cut(self, btn):
         self.dialog_short_cut.dismiss()
@@ -623,6 +665,8 @@ class Main(Screen):
         
         self.dialog_short_cut.open()
 
+    #-------------------------Help >> about------------------------#
+ 
     # close about note dialog 
     def close_about_note(self, btn):
         self.dialog_about_note.dismiss()
