@@ -160,7 +160,7 @@
     spacing:5
 
     Label:
-        text:"Enter Your Title"
+        text:"Enter Your Note Name"
         font_name:"Comic"
         font_size:16
         size_hint_y:None
@@ -277,6 +277,7 @@
                 
         
             TextInput:
+                id:note_input
                 background_color:rgba("#0f0f0f")
                 foreground_color: rgba("#4BD02F")
                 font_size:20
@@ -284,3 +285,33 @@
                 cursor_color:rgba("#708090")
                 cursor_width:2.3
                 on_text:root.color_save_btn(self.text)
+
+
+##
+##flie manager
+<File_Manager>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDCard:
+            Label:
+                text:"Note"
+            
+        ScrollView:
+            BoxLayout:
+                orientation:"vertical"
+
+                Button:
+                    text:"Note.txt"
+         
+
+
+
+
+
+
+
+
+
+
+

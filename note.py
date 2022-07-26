@@ -1,5 +1,6 @@
 #import 
 from fileinput import filename
+from venv import create
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
@@ -80,6 +81,8 @@ class Main(Screen):
     dialog_short_cut = None
     dialog_about_note = None
     dialog_save_file = None
+    dialog_new_file_save =None
+    dialog_new_file_dont_save = None
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -87,7 +90,7 @@ class Main(Screen):
         os.chdir("D:\\sweety\\Git_learn\\project\\gui_project\\file_manager")
 
         self.text_note = ''
-        self.title_note = ''
+        self.title_note = 'note.txt'
 
     #---------------------------save-button------------------------#
 
@@ -95,81 +98,41 @@ class Main(Screen):
     def color_save_btn(self, text_btn):
 
         self.text_note = text_btn
-
-        list_file = os.listdir()
-
-        if self.title_note in list_file:
-            with open(self.title_note, "r") as file:
-                text = file.read()
-                if text!=text_btn:
-                    self.ids.but_save.opacity = 1
-                else:
-                    self.ids.but_save.opacity = 0.5
-        else:
-            if len(self.text_note)!=0:
-                self.ids.but_save.opacity = 1
+        
+        with open(self.title_note, "r") as file:
+            text = file.read()
+            if text!=text_btn:     
+               self.ids.but_save.opacity = 1            
             else:
                 self.ids.but_save.opacity = 0.5
-
-    def close_save_file(self, btn):
-
-        self.title_note = f"{title_note_v[0]}.txt"
-        self.ids.note_title.text = self.title_note
-
-        file = open(self.title_note, "a")
-        file.write(self.text_note)
-        self.text_note = ""
-        file.close()
-
-        self.ids.but_save.opacity = 0.5
-
-        self.dialog_save_file.dismiss()
+            
+            file.close()
 
     def saving_text(self):
 
-        list_file = os.listdir()
+        with open(self.title_note, "r") as file:
+            text = file.read()
 
-        if len(self.text_note) != 0:
+            if text != self.text_note:
 
-            if self.title_note in list_file:
-
-                with open(self.title_note, "a") as file:
+                with open(self.title_note, "w") as file:
                     file.write(self.text_note)
-                    self.text_note = ''
                     file.close()
-                
-                self.ids.but_save.opacity = 0.5
-                
+                    
+                    self.ids.but_save.opacity = 0.5       
 
-                
             else:
-                
-                if not self.dialog_save_file:
-                    self.dialog_save_file = MDDialog(
-                        title = "Change Title",
-                        type = 'custom',
-                        content_cls = Title_Con(),
-                        size_hint=(0.4, 0.5),
-                        buttons = [
-                            MDFlatButton(
-                                text =  "save",
-                                on_release = self.close_save_file
-                            )
-                        ]
-
-                    )   
-
-                self.dialog_save_file.open()          
-
-        else:
-            print('Sorry!')
+                print('write something!!!! :| ' )
             
     #----------------------------title dialog-----------------------#
 
     #change title and close popup 
     def title_change(self, btn):
 
+        old_name = self.title_note
         self.title_note = f"{title_note_v[0]}.txt"
+        os.rename(old_name, self.title_note)
+        
         self.ids.note_title.text = self.title_note
         self.dialog_title.dismiss()
      
@@ -215,13 +178,6 @@ class Main(Screen):
                 'on_release':lambda x='file':self.new_file()
             },
             {
-                'text':'[b]save as[/b]',
-                'viewclass':'OneLineListItem',
-                'height':45,
-                'font_size':15,
-                'on_release':lambda x='save as':self.save_as()
-            },
-            {
                 'text':'exit',
                 'viewclass':'OneLineListItem',
                 'height':45,
@@ -240,74 +196,176 @@ class Main(Screen):
 
         self.menu_file.open()
 
-    #save file and create new file     #isssue -----@@@@@@@55-
+    #save file and create new file   
 
+    def new_file_save_save(self, btn):
+
+        self.title_note = title_note_v[0]+".txt"
+        
+        create_file = open(self.title_note, "x")
+        create_file.close()
+
+        self.ids.note_input.text = ''
+
+        self.dialog_new_file_save.dismiss()
+
+    def new_file_save_cancel(self, btn):
+
+        self.dialog_new_file_save.dismiss()
+        
     def new_file_save(self, btn):
 
         self.dialog_new_file.dismiss()
+
+        # save file 
+        with open(self.title_note, "w") as file:
+            file.write(self.text_note)
+            file.close()
+
+        #create new file
+        if not self.dialog_new_file_save:
+            self.dialog_new_file_save = MDDialog(
+                title  = "New file",
+                type = 'custom',
+                content_cls = Title_Con(),
+                size_hint=(0.4, 0.5),
+                buttons=[
+                    MDFlatButton(
+                        text = "save",
+                        on_release = self.new_file_save_save
+                    ),
+                    MDFlatButton(
+                    text = 'cancel',
+                    on_release = self.new_file_save_cancel
+                    )
+                ]
+            )
+
+        self.dialog_new_file_save.open()       
+
     
     #don't save file and create new file
-    def new_file_dont_save(self, btn):    #smalll issue --@#%^&*()
+
+    def new_file_dont_save_save(self, btn):
+
+        self.title_note = title_note_v[0]+".txt"
+        
+        create_file = open(self.title_note, "x")
+        create_file.close()
+
+        self.ids.note_input.text = ''
+
+        self.dialog_new_file_dont_save.dismiss()
+
+    def new_file_dont_save_cancel(self, btn):
+        
+        self.dialog_new_file_dont_save.dismiss()
+
+    def new_file_dont_save(self, btn):   
         
         self.dialog_new_file.dismiss()
+
+        if not self.dialog_new_file_dont_save:
+            self.dialog_new_file_dont_save = MDDialog(
+                title  = "New file",
+                type = 'custom',
+                content_cls = Title_Con(),
+                size_hint=(0.4, 0.5),
+                buttons=[
+                    MDFlatButton(
+                        text = "save",
+                        on_release = self.new_file_dont_save_save
+                    ),
+                    MDFlatButton(
+                    text = 'cancel',
+                    on_release = self.new_file_dont_save_cancel
+                    )
+                ]
+            )
+
+        self.dialog_new_file_dont_save.open()   
+
 
     #cancel to create new file
     def new_file_cancel(self, btn):
         self.dialog_new_file.dismiss()
 
+    def new_Cfile_save(self, btn):
+
+        self.title_note = title_note_v[0]+".txt"
+        
+        create_file = open(self.title_note, "x")
+        create_file.close()
+
+        self.ids.note_input.text = ''
+
+        self.dialog_save_file.dismiss()
+
+    def new_Cfile_cancel(self, btn):
+        self.dialog_save_file.dismiss()
+
     #to create new file 
     def new_file(self):
 
-        if not self.dialog_new_file:
-            self.dialog_new_file = MDDialog(
-                title  = "New file",
-                text = "do you want to save this?",
-                type='custom',
-                size_hint=(0.5,0.5),
-                buttons=[
-                    MDFlatButton(
-                        text = "save",
-                        on_release = self.new_file_save
-                    ),
-                    MDFlatButton(
-                        text = 'don\'t save',
-                        on_release = self.new_file_dont_save
-                    ),
-                    MDFlatButton(
-                        text = 'cancel',
-                        on_release = self.new_file_cancel
+        with open(self.title_note, "r") as file:
+            text = file.read()
+
+            if text != self.text_note:
+
+                if not self.dialog_new_file:
+
+                    self.dialog_new_file = MDDialog(
+                        title  = "New file",
+                        text = "do you want to save this?",
+                        type='custom',
+                        size_hint=(0.5,0.5),
+                        buttons=[
+                            MDFlatButton(
+                                text = "save",
+                                on_release = self.new_file_save
+                            ),
+                            MDFlatButton(
+                                text = 'don\'t save',
+                                on_release = self.new_file_dont_save
+                            ),
+                            MDFlatButton(
+                                text = 'cancel',
+                                on_release = self.new_file_cancel
+                            )
+                        ]
+
                     )
-                ]
 
-            )
+                #open dialog of new file
+                self.dialog_new_file.open()
+            
+            else:
+                
+                if not self.dialog_save_file:
+                    self.dialog_save_file = MDDialog(
+                        title  = "New file",
+                        type = 'custom',
+                        content_cls = Title_Con(),
+                        size_hint=(0.4, 0.5),
+                        buttons=[
+                            MDFlatButton(
+                                text = "save",
+                                on_release = self.new_Cfile_save
+                            ),
+                            MDFlatButton(
+                                text = 'cancel',
+                                on_release = self.new_Cfile_cancel
+                            )
+                        ]
 
-        #open dialog of new file
-        self.dialog_new_file.open()
-
-    def save_as_ok(self, btn):
-        
-
-        self.dialog_save_as.dismiss()
-
-    #to save the file in any dir
-    def save_as(self):     #issue ------------ @#%^&*()
-        
-        if not self.dialog_save_as:
-            self.dialog_save_as = MDDialog(
-                title  = "New file",
-                type='custom',
-                buttons=[
-                    MDFlatButton(
-                        text = 'ok',
-                        on_release = self.save_as_ok
                     )
-                ]
 
-            )
+                self.dialog_save_file.open()
 
-        #open dialog of new file
-        self.dialog_save_as.open()
+            file.close()
+
     
+    #---------------------------file >>  exit----------------------------------#
 
     #save and exit from app
     def exit_save(self, btn):     #issue---------------!@#%^&
@@ -335,7 +393,9 @@ class Main(Screen):
         if not self.dialog_exit_note:
             self.dialog_exit_note = MDDialog(
                 title  = "New file",
+                text = "do you want to save this?",
                 type='custom',
+                size_hint=(0.5,0.5),
                 buttons=[
                     MDFlatButton(
                         text = "save",
