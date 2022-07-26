@@ -83,6 +83,7 @@ class Main(Screen):
     dialog_save_file = None
     dialog_new_file_save =None
     dialog_new_file_dont_save = None
+    dialog_exit_note_file = None
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -368,54 +369,71 @@ class Main(Screen):
     #---------------------------file >>  exit----------------------------------#
 
     #save and exit from app
-    def exit_save(self, btn):     #issue---------------!@#%^&
+    def exit_save(self, btn):  
+
+        #save file
+        with open(self.title_note, "w") as file:
+            file.write(self.text_note)
+            file.close()   
         
         self.dialog_exit_note.dismiss()
 
+        #exit the winodw
         MDApp.get_running_app().stop()
         Window.close()
 
     #don't save and exit from app
-    def exit_dont_save(self, btn):  #issue -----------%^&*
+    def exit_dont_save(self, btn):  
         
         self.dialog_exit_note.dismiss()
 
         MDApp.get_running_app().stop()
         Window.close()
     
-    def exit_cancel(self, btn): #issue----------@#%^&
+    #cancel exit of note window
+    def exit_cancel(self, btn):
 
         self.dialog_exit_note.dismiss()
 
     #exit a note
     def exit_note(self):
 
-        if not self.dialog_exit_note:
-            self.dialog_exit_note = MDDialog(
-                title  = "New file",
-                text = "do you want to save this?",
-                type='custom',
-                size_hint=(0.5,0.5),
-                buttons=[
-                    MDFlatButton(
-                        text = "save",
-                        on_release = self.exit_save
-                    ),
-                    MDFlatButton(
-                        text = 'don\'t save',
-                        on_release = self.exit_dont_save
-                    ),
-                    MDFlatButton(
-                        text = 'cancel',
-                        on_release = self.exit_cancel
+        with open(self.title_note, "r") as file:
+            text = file.read()
+            
+            if text != self.text_note:
+                 
+                if not self.dialog_exit_note:
+                    self.dialog_exit_note = MDDialog(
+                        title  = "New file",
+                        text = "do you want to save this?",
+                        type='custom',
+                        size_hint=(0.5,0.5),
+                        buttons=[
+                            MDFlatButton(
+                                text = "save",
+                                on_release = self.exit_save
+                            ),
+                            MDFlatButton(
+                                text = 'don\'t save',
+                                on_release = self.exit_dont_save
+                            ),
+                            MDFlatButton(
+                                text = 'cancel',
+                                on_release = self.exit_cancel
+                            )
+                        ]
+
                     )
-                ]
 
-            )
-
-        #open dialog of new file
-        self.dialog_exit_note.open()
-
+                #open dialog of new file
+                self.dialog_exit_note.open()
+            else:
+                
+                MDApp.get_running_app().stop()
+                Window.close()
+            
+            file.close()
 
     #-------------------------Edit option------------------------#
 
