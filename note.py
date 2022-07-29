@@ -13,16 +13,14 @@ from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from kivy.uix.button import Button
-from kivy.graphics import Color , RoundedRectangle, Rectangle
+from kivy.graphics import Color , RoundedRectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 from kivy.animation import Animation
-from kivy.utils import get_hex_from_color as C
 
 #other modules
 import os
-from datetime import datetime
 
 #ScreenManger 
 sm = ScreenManager(transition = NoTransition())
@@ -114,6 +112,11 @@ class Main(Screen):
         self.text_note = ''
         self.title_note = 'note.txt'
         self.emoji_task = False
+
+        #create drawn
+
+        set_drawn = self.ids.setting_drawn
+        set_drawn.pos = (Window.size[0],0)
 
     #---------------------------save-button------------------------#
 
@@ -715,6 +718,23 @@ class Main(Screen):
 
         self.dialog_about_note.open()
 
+    #open drawer box for setting
+    def open_drawer(self,*args):
+
+        anime = Animation(pos = (Window.size[0]-250,0), duration=0.2)
+
+        set_draw = self.ids.setting_drawn
+        
+        anime.start(set_draw)
+
+   #close drawer box for settig
+    def colse_drawer(self,*args):
+
+        anime = Animation(pos = (Window.size[0],0), duration=0.2)
+
+        set_draw = self.ids.setting_drawn
+        
+        anime.start(set_draw)
         
 
 #variable

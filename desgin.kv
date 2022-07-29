@@ -330,8 +330,17 @@
                     markup:True
                     font_name:'Comic'
                     on_release: root.help_menu(self)
+
+                Label:
+
+                #setting button
+                MDIconButton:
+                    icon:"cog"
+                    pos_hint: {'center_y': 0.5}
+                    size_hint_x:None
+                    width:50
+                    on_release:root.open_drawer()
                 
-        
             TextInput:
                 id:note_input
                 background_color:rgba("#0f0f0f")
@@ -341,6 +350,58 @@
                 cursor_color:rgba("#708090")
                 cursor_width:2.3
                 on_text:root.color_save_btn(self.text)
+
+    FloatLayout:
+        id:setting_drawn
+        size_hint_x:None
+        width:250
+
+        canvas.before:
+            Color:
+                rgba:rgba("#151515")
+        
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        ScrollView:
+            size_hint_x:None
+            width:250
+            pos:(self.parent.pos[0],0)
+    
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y:None
+                height:500
+                spacing:10
+
+                #title of setting 
+                MDCard:
+                    orientation: 'horizontal'
+                    size_hint_y:None
+                    height:45
+                    md_bg_color:rgba("080808")
+                    radius:[0,0,15,15]
+
+                    MDIconButton:
+                        icon:'arrow-left-drop-circle-outline'
+                        size_hint_x:None
+                        width:50
+                        pos_hint: {'center_y': 0.5}
+                        on_release:root.colse_drawer()
+
+                    MDLabel:
+                        text:"[b]Setting[/b]"
+                        markup:True
+                        font_name:"Comic"
+                        font_size:23
+
+
+                BoxLayout:
+                    orientation: "vertical"   
+
+                    Label:
+                        text:"option"  
 
 
 ##
