@@ -279,6 +279,16 @@
                         size: self.size
                         pos: self.pos
                         radius: [15,15]
+        
+        MDCard:
+            id:emoji_show
+            orientation: 'horizontal'
+            size_hint:None,None
+            size:root.width-10,1
+            md_bg_color:rgba("#090909")
+            pos_hint: {'center_x': 0.5}
+            radius:[20]
+            padding:[17,0,0,4]
 
         BoxLayout:
             orientation: 'vertical'

@@ -1,4 +1,5 @@
 #modules of kivymd
+from tkinter import Scrollbar
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.menu import MDDropdownMenu
@@ -12,10 +13,12 @@ from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from kivy.uix.button import Button
-from kivy.graphics import Color , RoundedRectangle
+from kivy.graphics import Color , RoundedRectangle, Rectangle
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
+from kivy.animation import Animation
+from kivy.utils import get_hex_from_color as C
 
 #other modules
 import os
@@ -95,7 +98,7 @@ class Main(Screen):
     dialog_exit_note = None
     dialog_find_word = None
     dialog_replace_word = None
-    dialog_taskbar = None
+    dialog_emoji = None
     dialog_setting = None
     dialog_short_cut = None
     dialog_about_note = None
@@ -110,6 +113,7 @@ class Main(Screen):
 
         self.text_note = ''
         self.title_note = 'note.txt'
+        self.emoji_task = False
 
     #---------------------------save-button------------------------#
 
@@ -474,19 +478,12 @@ class Main(Screen):
                 'on_release':lambda x='replace':self.replace_word()
             },
             {
-                'text':'[b]taskbar[/b]',
+                'text':'[b]emoji[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
                 'font_size':15,
-                'on_release':lambda x='taskbar':self.taskbar()
-            },
-            {
-                'text':'[b]setting[/b]',
-                'viewclass':'OneLineListItem',
-                'height':45,
-                'font_size':15,
-                'on_release':lambda x='setting':self.setting()
-            },
+                'on_release':lambda x='emoji':self.emoji()
+            }
         ]
 
         self.menu_edit = MDDropdownMenu(
@@ -565,29 +562,54 @@ class Main(Screen):
         #open dialog of new file
         self.dialog_replace_word.open()
     
-    #-------------------------Edit >> taskbar------------------------#
+    #-------------------------Edit >> emoji------------------------#
 
-    def taskbar_save(self, btn):
-        self.dialog_taskbar.dismiss()
+    #exit the emoji
+    def exit_emoji(self, but, *args):
+
+        anime = Animation(height = 1, duration=0.2)
+
+        but.clear_widgets()
+
+        anime.start(but)
+
+        self.emoji_task = False
 
     #add the taskbar
-    def taskbar(self):
-        if not self.dialog_taskbar:
-            self.dialog_taskbar = MDDialog(
-                title  = "New file",
-                type='custom',
-                buttons=[
-                    MDFlatButton(
-                        text = 'save',
-                        on_release = self.taskbar_save
-                    )
-                ]
+    def emoji(self, *args):
 
-            )
+        emo = self.ids.emoji_show
 
-        #open dialog of new file
-        self.dialog_taskbar.open()
-    
+        anime = Animation(height = 50, duration=0.2)
+           
+        #scroller 
+        scroll = ScrollView(bar_color = (0,0,0,0),bar_inactive_color = (0,0,0,0) ,do_scroll_y = False,size_hint_y = None,height = 45)
+
+        #box of emoji
+        emoji_box = BoxLayout(orientation = 'horizontal', size_hint_x = None, width = 700)
+          
+        #emoji in box
+        for i in range(20):
+            emoji = Button(text = "\N{winking face}", font_size = 25, size_hint_x =  None, width = 45, pos_hint = {'center_y': 0.5}, font_name = "seguiemj", background_color = (0,0,0,0))
+            emoji_box.add_widget(emoji)
+
+        # cancel button 
+        cross_btn = MDIconButton(icon = "close-circle-outline", pos_hint = {'center_y': .5})
+        cross_btn.bind(on_release = lambda x: self.exit_emoji(emo))
+
+        # emoji_box.add_widget(emoji)
+        scroll.add_widget(emoji_box)
+
+        emo.add_widget(scroll)
+        emo.add_widget(cross_btn)
+
+        if self.emoji_task == False:
+            anime.start(emo)
+            self.emoji_task=True
+
+        elif self.emoji_task!= False:
+            self.exit_emoji(emo)
+
     #-------------------------Edit >> setting------------------------#
 
     def setting_save(self, btn):
@@ -882,7 +904,6 @@ class File_Manager(Screen):
 
         sm.current =  "main"
         
-    
     #delete file
     def delete_file(self, obj):
         
@@ -897,7 +918,6 @@ class File_Manager(Screen):
         #del file in self.file_list
         self.file_list.pop(str(obj))
 
-    
 
 #main app
 class Note(MDApp):
@@ -908,8 +928,8 @@ class Note(MDApp):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
 
-        sm.add_widget(File_Manager(name='file'))
         sm.add_widget(Main(name="main"))
+        sm.add_widget(File_Manager(name='file'))
 
         return sm
 
