@@ -193,6 +193,27 @@
 
 
 # 
+#dialog of create file
+<Create_file_Con>:
+    orientation: 'vertical'
+    size_hint_y:None
+    height:100
+    spacing:5
+
+    Label:
+        text:"Enter Your Note Name"
+        font_name:"Comic"
+        font_size:16
+        size_hint_y:None
+        height:60
+    
+    MDTextField:
+        hint_text: 'title'
+        font_size:20
+        max_text_length: 20
+        on_text:root.note_name(self.text)
+
+#
 #desgin file
 <Main>:
     BoxLayout:
@@ -204,7 +225,7 @@
             size_hint_y:None
             height:50
             md_bg_color: rgba("#101010")
-            padding:[40,0]
+            padding:[10,0,40,0]
         
             canvas.before:
                 Color:
@@ -214,6 +235,14 @@
                     size: self.size[0], self.size[1]
                     pos: self.pos
                     radius: [5,5,20,20]
+
+            MDIconButton:
+                id:back_screen
+                icon:"arrow-left-drop-circle-outline"
+                size_hint:None,None
+                size:50,50
+                pos_hint: {'center_y': 0.5}
+                on_release:root.manager.current = "file"
             
             Button:
                 id:note_title
@@ -309,17 +338,42 @@
 <File_Manager>:
     BoxLayout:
         orientation: 'vertical'
+        padding:[5,0]
+        spacing:10
 
         MDCard:
-            Label:
-                text:"Note"
+            orientation: 'horizontal'
+            size_hint_y:None
+            height:50
+            radius:[0,0,20,20]
+            md_bg_color:rgba("#171717")
+            padding:[20,0,20,0]
+
+            MDIconButton:
+                icon:'file-document-outline'
+                size_hint_x:None
+                user_font_size:30
+
+            MDLabel:
+                text:"[b]Note[/b]"
+                markup:True
+                font_name:"Comic"
+                font_size:25
+            
+            MDIconButton:
+                icon:"file-plus-outline"
+                on_release:root.create_file()
             
         ScrollView:
             BoxLayout:
                 orientation:"vertical"
-
-                Button:
-                    text:"Note.txt"
+                padding:[20,0]
+                spacing:5
+                id:note_manager
+   
+                Label:
+                    id:extra_space
+                    text:"welcome to note!"
          
 
 

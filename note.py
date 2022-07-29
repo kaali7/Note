@@ -1,24 +1,28 @@
-#import 
-from dataclasses import replace
-from fileinput import filename
-from importlib.resources import contents
-from tkinter import dialog
-from venv import create
+#modules of kivymd
 from kivymd.app import MDApp
+from kivymd.uix.behaviors import HoverBehavior
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton, MDIconButton
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
+
+#modules of kivy
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
-from kivymd.uix.behaviors import HoverBehavior
 from kivy.uix.button import Button
 from kivy.graphics import Color , RoundedRectangle
-from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.label import Label
 
-#os
+#other modules
 import os
+from datetime import datetime
+
+#ScreenManger 
+sm = ScreenManager(transition = NoTransition())
 
 #window fix size
 Window.size = (630,450)
@@ -100,9 +104,8 @@ class Main(Screen):
     dialog_new_file_dont_save = None
     dialog_exit_note_file = None
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
-
+    def __init__(self, **kwargs):
+        super(Main, self).__init__(**kwargs)
         os.chdir("D:\\sweety\\Git_learn\\project\\gui_project\\file_manager")
 
         self.text_note = ''
@@ -690,10 +693,211 @@ class Main(Screen):
 
         self.dialog_about_note.open()
 
+        
+
+#variable
+#note name
+note_name_v = [0]
+
+#dialog of file create
+class Create_file_Con(BoxLayout):
+    
+    def note_name(self, text):
+        note_name_v[0] = text
 
 #file manager
 class File_Manager(Screen):
-    pass
+
+    dialog_file_create = None
+    dialog_delete_file = None
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+        self.file_note = ''
+        self.file_list = {}
+
+        self.set_note()
+
+    #set note 
+
+    def set_note_save(self, filename):
+        # main box
+        file_manager = self.ids.note_manager
+
+        file_note = filename
+
+        #file
+        File_card = MDCard(orientation = 'horizontal', size_hint_y = None, height = 45, padding = [10,0], radius = [20])
+        self.ids[f"{file_note}"] = File_card
+
+        #file open
+        file_open_card = MDCard(orientation = 'horizontal', size_hint_y = None, height = 45, radius = [20])
+        file_open_card.bind(on_release = lambda x: self.file_open(File_card))
+
+        # file_open_card contents 
+        # button 
+        file_open_icon = MDIconButton(icon = "file-document-outline", pos_hint = {'center_y': 0.5}, size_hint_x = None)
+
+        # note name
+        file_open_name = MDLabel(text = f"[b]{file_note}[/b]",markup = True , font_size = 20)
+
+        #file delete button
+        file_delete_btn = MDIconButton(icon = "delete-outline")
+        file_delete_btn.bind(on_release = lambda x: self.delete_file(File_card))
+
+        # file_open_card contents are adding
+        file_open_card.add_widget(file_open_icon)
+        file_open_card.add_widget(file_open_name)
+    
+        #file_card contents are adding
+        File_card.add_widget(file_open_card)
+        File_card.add_widget(file_delete_btn)
+
+        #file are adding in file_manager
+        file_manager.add_widget(File_card)
+            
+        #adding file in file_list
+        self.file_list.update({f"{File_card}":f"{file_note}"})
+
+    def set_note(self):
+
+        os.chdir("D:\\sweety\\Git_learn\\project\\gui_project\\file_manager")
+        file_list_folder = os.listdir()
+        num_file = len(file_list_folder)
+
+        # main box
+        file_manager = self.ids.note_manager
+
+        #deleted extra space
+        extra_spce = self.ids.extra_space
+        file_manager.remove_widget(extra_spce)
+
+        for i in range(num_file):
+            self.set_note_save(file_list_folder[i])
+
+        #extra space are adding bottom
+        extra_label = Label()
+        self.ids["extra_space"] = extra_label
+        file_manager.add_widget(extra_label)
+
+    #create file
+    def create_file_save(self, btn):
+        
+        self.file_note = note_name_v[0] + ".txt"
+
+        # create a file 
+        f = open(self.file_note, "x")
+        f.close()
+
+        # main box 
+        file_manager = self.ids.note_manager
+        # delete the extra_space label 
+        extra_spce = self.ids.extra_space
+        file_manager.remove_widget(extra_spce)
+
+        File_card = MDCard(orientation = 'horizontal', size_hint_y = None, height = 45, padding = [10,0], radius = [20])
+        self.ids[f"{self.file_note}"] = File_card
+
+        file_open_card = MDCard(orientation = 'horizontal', size_hint_y = None, height = 45, radius = [20])
+        file_open_card.bind(on_release = lambda x: self.file_open(File_card))
+
+        # file_open_card contents 
+        
+        # button 
+        file_open_icon = MDIconButton(icon = "file-document-outline", pos_hint = {'center_y': 0.5}, size_hint_x = None)
+
+        # note name
+        file_open_name = MDLabel(text = f"[b]{self.file_note}[/b]" ,markup = True , font_size = 20)
+
+        #file delete button
+        file_delete_btn = MDIconButton(icon = "delete-outline")
+        file_delete_btn.bind(on_release = lambda x: self.delete_file(File_card))
+
+        #extra space
+        extra_label = Label()
+        self.ids["extra_space"] = extra_label
+
+        # file_open_card contents are adding
+        file_open_card.add_widget(file_open_icon)
+        file_open_card.add_widget(file_open_name)
+
+        #file_card contents are adding
+        File_card.add_widget(file_open_card)
+        File_card.add_widget(file_delete_btn)
+
+        #file are adding in file_manager
+        file_manager.add_widget(File_card)
+        file_manager.add_widget(extra_label)
+
+        #adding file in file_list
+        self.file_list.update({f"{File_card}":f"{self.file_note}"})
+
+
+        self.dialog_file_create.dismiss()
+    
+    def create_file_cancel(self, btn):
+        self.dialog_file_create.dismiss()
+    
+    def create_file(self):
+
+        if not self.dialog_file_create:
+            self.dialog_file_create = MDDialog(
+                title='Create Note',
+                type='custom',
+                size_hint = (0.5, 0.4),
+                content_cls=Create_file_Con(),
+                buttons = [
+                    MDFillRoundFlatButton(
+                        text="save",
+                        on_release=self.create_file_save
+                    ),
+                    MDFillRoundFlatButton(
+                        text="cancel",
+                        on_release=self.create_file_cancel
+                    )
+                ]
+            )
+
+        self.dialog_file_create.open()
+
+    #open file
+    def file_open(self, obj):
+        note_file = self.file_list[str(obj)]
+ 
+        #main
+        main = sm.get_screen("main")
+
+        #title name change
+        main.ids.note_title.text = note_file
+        main.title_note = note_file
+
+        #give text to note
+        with open(note_file, "r") as file:
+            text = file.read()
+
+            main.ids.note_input.text = text
+
+            file.close()        
+
+        sm.current =  "main"
+        
+    
+    #delete file
+    def delete_file(self, obj):
+        
+        #del file in file_manage folder
+        f = self.file_list[str(obj)]
+        os.remove(f)
+
+        #del file in note file_manager
+        file_manage = self.ids.note_manager
+        file_manage.remove_widget(obj)
+
+        #del file in self.file_list
+        self.file_list.pop(str(obj))
+
+    
 
 #main app
 class Note(MDApp):
@@ -703,13 +907,11 @@ class Note(MDApp):
         # color theme of app
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
-        
-        self.sm = ScreenManager(transition = NoTransition())
 
-        self.sm.add_widget(Main(name="main"))
-        self.sm.add_widget(File_Manager(name='file'))
+        sm.add_widget(File_Manager(name='file'))
+        sm.add_widget(Main(name="main"))
 
-        return self.sm
+        return sm
 
 #run app
 App = Note()
