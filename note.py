@@ -1,5 +1,4 @@
 #modules of kivymd
-from tkinter import Scrollbar
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.menu import MDDropdownMenu
@@ -112,11 +111,18 @@ class Main(Screen):
         self.text_note = ''
         self.title_note = 'note.txt'
         self.emoji_task = False
-
+        
+        #writer board
+        self.board = self.ids.note_input
+        self.board_text_color = ()
+        self.board_text_size = 0
+        self.window_height_note = 0
+        self.window_width_note = 0
+        self.board_zoom = 0
         #create drawn
 
         set_drawn = self.ids.setting_drawn
-        set_drawn.pos = (Window.size[0],0)
+        set_drawn.pos = (Window.size[0]-250,0)
 
     #---------------------------save-button------------------------#
 
@@ -718,6 +724,8 @@ class Main(Screen):
 
         self.dialog_about_note.open()
 
+    #drawer box for setting
+
     #open drawer box for setting
     def open_drawer(self,*args):
 
@@ -735,7 +743,87 @@ class Main(Screen):
         set_draw = self.ids.setting_drawn
         
         anime.start(set_draw)
+ 
+    #color change in writer borad
+    def red_color_text(self):
+        self.board_text_color = (1,0,0,1)
+
+    def yel_color_text(self):
+        self.board_text_color = (255/255, 215/255, 0/255,1)
+
+    def gre_color_text(self):
+        self.board_text_color = (0/255, 128/255, 0/255,1)
+
+    def pur_color_text(self):
+        self.board_text_color = (102/255, 51/255, 153/255, 1)
+
+    def org_color_text(self):
+        self.board_text_color = (255/255, 140/255, 0/255, 1)
+    
+    #size change of text
+
+    def text_size(self, obj):
+        self.board_text_size = ''
+        size = obj.text
+        l = len(size)
+
+        if l<5:
+            self.board_text_size = size
+        else:
+            obj.text = size[0:4]
+            self.board_text_size =  size[0:4]
+
+    #window size 
+
+    def root_win_heigt(self, height):
+
+        self.board_text_size = ''
+        size = height.text
+        l = len(size)
+
+        if l<5:
+            self.board_text_size = size
+        else:
+            height.text = size[0:4]
+            self.board_text_size =  size[0:4]
+
+    def root_win_width(self, width):
+
+        self.board_text_size = ''
+        size = width.text
+        l = len(size)
+
+        if l<5:
+            self.board_text_size = size
+        else:
+            width.text = size[0:4]
+            self.board_text_size =  size[0:4]
+
+    #zoom
+
+    def zoom_max(self):
+        num = int(self.ids.zoom_num.text )
+
+        num+=10
+
+        self.board_zoom = num
+        self.ids.zoom_num.text = str(num)
+    
+    def zoom_min(self):
+        num = int(self.ids.zoom_num.text) 
+
+        num-=10
+
+        if num<10:
+            self.board_zoom = num
+            self.ids.zoom_num.text = "10"
+
+        else:
+            self.board_zoom = num
+            self.ids.zoom_num.text = str(num)
         
+
+
 
 #variable
 #note name

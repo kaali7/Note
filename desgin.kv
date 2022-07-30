@@ -363,46 +363,375 @@
             Rectangle:
                 size: self.size
                 pos: self.pos
-
-        ScrollView:
-            size_hint_x:None
-            width:250
+            
+        BoxLayout:
+            orientation: 'vertical'
+            spacing:10
             pos:(self.parent.pos[0],0)
-    
-            BoxLayout:
-                orientation: 'vertical'
+
+            #title of setting 
+            MDCard:
+                orientation: 'horizontal'
                 size_hint_y:None
-                height:500
-                spacing:10
+                height:45
+                md_bg_color:rgba("080808")
+                radius:[0,0,15,15]
 
-                #title of setting 
-                MDCard:
-                    orientation: 'horizontal'
-                    size_hint_y:None
-                    height:45
-                    md_bg_color:rgba("080808")
-                    radius:[0,0,15,15]
+                MDIconButton:
+                    icon:'arrow-left-drop-circle-outline'
+                    size_hint_x:None
+                    width:50
+                    pos_hint: {'center_y': 0.5}
+                    on_release:root.colse_drawer()
 
-                    MDIconButton:
-                        icon:'arrow-left-drop-circle-outline'
-                        size_hint_x:None
-                        width:50
-                        pos_hint: {'center_y': 0.5}
-                        on_release:root.colse_drawer()
-
-                    MDLabel:
-                        text:"[b]Setting[/b]"
-                        markup:True
-                        font_name:"Comic"
-                        font_size:23
-
+                MDLabel:
+                    text:"[b]Setting[/b]"
+                    markup:True
+                    font_name:"Comic"
+                    font_size:23
+                
+            ScrollView:
+                size_hint_x:None
+                width:250
 
                 BoxLayout:
                     orientation: "vertical"   
+                    size_hint_y:None
+                    height:750
+                    spacing:5
 
+                    #font color
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Font Color[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                    
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y:None
+                        height:50
+                        padding:[13,10]
+                        spacing:4
+
+                        Button:
+                            text:"[b]R[/b]"
+                            font_size:12
+                            markup:True
+                            background_color:(0,0,0,0)
+                            color:0,0,0,1
+                            on_release:root.red_color_text()
+
+                            canvas.before:
+                                Color:
+                                    rgba:rgba("#FF0000")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [3,3]
+                        
+                        Button:
+                            text:"[b]Y[/b]"
+                            font_size:12
+                            markup:True
+                            background_color:(0,0,0,0)
+                            color:0,0,0,1
+                            on_release:root.yel_color_text()
+
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#FFD700")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [3,3]
+                        
+                        Button:
+                            text:"[b]G[/b]"
+                            font_size:12
+                            markup:True
+                            background_color:(0,0,0,0)
+                            color:0,0,0,1
+                            on_release:root.gre_color_text()
+
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#008000")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [3,3]
+                        
+                        Button:
+                            text:"[b]P[/b]"
+                            font_size:12
+                            markup:True
+                            background_color:(0,0,0,0)
+                            color:0,0,0,1
+                            on_release:root.pur_color_text()
+
+                            canvas.before:
+                                Color:
+                                    rgba:rgba("#663399")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [3,3]
+                        
+                        Button:
+                            text:"[b]Q[/b]"
+                            font_size:12
+                            markup:True
+                            background_color:(0,0,0,0)
+                            color:0,0,0,1
+                            on_release:root.org_color_text()
+
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#FF8C00")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [3,3]
+                    
+                    #font name
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Font Name[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                        
+                    BoxLayout:
+                        
+                    
+                    #font size
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Font Size[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                        
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y:None
+                        height:50
+                        padding:[70,0,0,10]
+                        spacing:5
+
+                        MDLabel:
+                            text:"[b]size : [/b]"
+                            markup:True
+                            font_size:16
+                            size_hint_x:None
+                            width:40
+                            pos_hint: {'center_y': 0.5}
+                        
+                        MDTextFieldRect:
+                            size_hint:None,None
+                            max_text_length:4
+                            size:70,40
+                            height: 30
+                            multiline: False
+                            pos_hint: {'center_y': 0.5}
+                            on_text: root.text_size(self)
+                    
+                        
+                    #window size
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Window Size[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                        
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y:None
+                        height:100
+                        padding:[40,10]
+                        spacing:5
+
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint_y:None
+                            height:40
+                            spacing:25
+
+                            MDLabel:
+                                text:"[b]width : [/b]"
+                                markup:True
+                                font_size:16
+                                size_hint_x:None
+                                width:60
+                                pos_hint: {'center_y': 0.5}
+                        
+                            MDTextFieldRect:
+                                size_hint:None,None
+                                size:70,40
+                                height: 30
+                                multiline: False
+                                pos_hint: {'center_y': 0.5}
+                                on_text:root.root_win_width(self)
+
+                        
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint_y:None
+                            height:40
+                            spacing:25
+
+                            MDLabel:
+                                text:"[b]height : [/b]"
+                                markup:True
+                                font_size:16
+                                size_hint_x:None
+                                width:60
+                                pos_hint: {'center_y': 0.5}
+                        
+                            MDTextFieldRect:
+                                size_hint:None,None
+                                size:70,40
+                                height: 30
+                                multiline: False
+                                pos_hint: {'center_y': 0.5}
+                                on_text:root.root_win_heigt(self)
+
+                        
+                    # zoom   
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Zoom[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                    
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y:None
+                        height:120
+                        padding:5
+                        spacing:5
+
+                        Label:
+                            id:zoom_num
+                            text: "20"
+                            bold:True
+                            font_size:30
+                        
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint_y:None
+                            height:70
+                            padding:[55,10]
+                            spacing:30
+                        
+                            MDIconButton:
+                                icon:"plus"
+                                user_font_size:30
+                                md_bg_color:rgba("#303030")
+                                on_release:root.zoom_max()
+
+                            MDIconButton:
+                                icon:"minus"
+                                user_font_size:30
+                                md_bg_color:rgba("#303030")
+                                on_release:root.zoom_min()
+                    
+                    #save button
+                    MDCard:
+                        orientation:'vertical'
+                        size_hint:None,None
+                        size:240, 35
+                        md_bg_color:rgba("#101010")
+                        radius:[10]
+                        padding:[20,0]
+                        pos_hint: {'center_x': 0.5}
+
+                        MDLabel:
+                            text:"[b]Save[/b]"
+                            font_size:16
+                            font_name:"Comic"
+                            markup:True
+                    
                     Label:
-                        text:"option"  
+                        size_hint_y:None
+                        height:15
 
+                    Save_but:
+                        text: '[b]save[/b]'
+                        markup:True
+                        font_size:20
+                        font_name:"Comic"
+                        size_hint: None,None
+                        size: 100,35
+                        background_color:0,0,0,0
+                        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                        # on_release: root.saving_text()
+                  
+                        canvas.before:
+                            Color:
+                                rgba:rgba("#7B68EE")
+                
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [15,15]
+                        
+                    
+                    #space
+                    Label:
+
+
+                    
+                    
 
 ##
 ##flie manager
