@@ -1017,6 +1017,8 @@ class File_Manager(Screen):
 class Note(MDApp):
 
     def build(self):
+        # icon = "other/logo.png"
+        icon = "note_icon.png"
 
         # color theme of app
         self.theme_cls.theme_style = "Dark"
