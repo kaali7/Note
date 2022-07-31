@@ -52,104 +52,33 @@
     size_hint_y:None
     height:150
 
-    BoxLayout:
-        orientation: 'vertical'
+    GridLayout:
+        cols:2
         size_hint_y:None
-        height:270
-        padding:5
-        
-        BoxLayout:
-            orientation: 'horizontal'
-            size_hint_y:None
-            height:80
-            spacing:5
-
-            Label:
-
-            Lab_short:
-                text:'Short-Cut:'
-                pos_hint: {'center_y': 0.5}
-            But_short:
-                text:"[b]Shift+S[/b]"
-                pos_hint: {'center_y': 0.5}
-
-            Label:
+        height:200
+        padding:[50,10]
+        spacing:5
         
 
-        BoxLayout:
-            orientation: 'horizontal'
-            spacing:10
-
-            GridLayout:
-                cols:2
-                spacing:7
-
-                Lab_short:
-                    text:"copy:"
-                But_short:
-                    text:"[b]Ctrl+C[/b]"
+        Lab_short:
+            text:"copy:"
+        But_short:
+            text:"[b]Ctrl+C[/b]"
                 
-                Lab_short:
-                    text:"paste:"
-                But_short:
-                    text:"[b]Ctrl+V[/b]"
-                
-                Lab_short:
-                    text:"cut:"
-                But_short:
-                    text:"[b]Ctrl+X[/b]"
-                
-                Lab_short:
-                    text:"undo:"
-                But_short:
-                    text:"[b]Ctrl+Z[/b]"
-                
-                Lab_short:
-                    text:"setting:"
-                But_short:
-                    text:"[b] Ctrl+S[/b]"
-
-            Label:#create divide line 
-                size_hint_x:None
-                width:4
-                canvas:
-                    Color:
-                        rgba:rgba("#151515")
+        Lab_short:
+            text:"paste:"
+        But_short:
+            text:"[b]Ctrl+V[/b]"
             
-                    RoundedRectangle:
-                        size:self.size
-                        pos:self.pos
-                        radius:[3,3]
+        Lab_short:
+            text:"cut:"
+        But_short:
+            text:"[b]Ctrl+X[/b]"
                 
-            GridLayout:
-                cols:2
-                spacing:7
-
-                Lab_short:
-                    text:"taskbar:"            
-                But_short:
-                    text:"[b]Shift+R[/b]"
-                
-                Lab_short:
-                    text:"find:"            
-                But_short:
-                    text:"[b]Ctrl+F[/b]"
-                
-                Lab_short:
-                    text:"replace:"            
-                But_short:
-                    text:"[b]Ctrl+R[/b]"
-
-                Lab_short:
-                    text:"save:"            
-                But_short:
-                    text:"[b]Tab+Q[/b]"
-                
-                Lab_short:
-                    text:"new:"            
-                But_short:
-                    text:"[b]Shift+N[/b]"
-
+        Lab_short:
+            text:"undo:"
+        But_short:
+            text:"[b]Ctrl+Z[/b]"
 
 #
 ## dialog of title change
@@ -242,7 +171,7 @@
                 size_hint:None,None
                 size:50,50
                 pos_hint: {'center_y': 0.5}
-                on_release:root.manager.current = "file"
+                on_release:root.back_file()
             
             Button:
                 id:note_title
@@ -257,7 +186,6 @@
                 on_release:root.popup_title()
 
             MDLabel:
-
             Save_but:
                 id:but_save
                 text: '[b]save[/b]'
@@ -397,7 +325,7 @@
                 BoxLayout:
                     orientation: "vertical"   
                     size_hint_y:None
-                    height:750
+                    height:850
                     spacing:5
 
                     #font color
@@ -416,12 +344,23 @@
                             font_name:"Comic"
                             markup:True
                     
+                   
+                    Label:
+                        id:text_color
+                        text:"[b]Text Color[/b]"
+                        font_size:23
+                        font_name:"Comic"
+                        markup:True
+                        size_hint_y:None
+                        height:40
+                        color:rgba("#663399")
+        
                     BoxLayout:
                         orientation: 'horizontal'
                         size_hint_y:None
                         height:50
                         padding:[13,10]
-                        spacing:4
+                        spacing:4                
 
                         Button:
                             text:"[b]R[/b]"
@@ -523,121 +462,113 @@
                             font_size:16
                             font_name:"Comic"
                             markup:True
-                        
-                    BoxLayout:
-                        
                     
-                    #font size
-                    MDCard:
-                        orientation:'vertical'
-                        size_hint:None,None
-                        size:240, 35
-                        md_bg_color:rgba("#101010")
-                        radius:[10]
-                        padding:[20,0]
-                        pos_hint: {'center_x': 0.5}
-
-                        MDLabel:
-                            text:"[b]Font Size[/b]"
-                            font_size:16
-                            font_name:"Comic"
-                            markup:True
-                        
-                    BoxLayout:
-                        orientation: 'horizontal'
+                    Label:
+                        id:text_name
+                        text:"[b]Text Name[/b]"
+                        font_size:23
+                        font_name:"Comic"
+                        markup:True
                         size_hint_y:None
-                        height:50
-                        padding:[70,0,0,10]
-                        spacing:5
-
-                        MDLabel:
-                            text:"[b]size : [/b]"
-                            markup:True
-                            font_size:16
-                            size_hint_x:None
-                            width:40
-                            pos_hint: {'center_y': 0.5}
-                        
-                        MDTextFieldRect:
-                            size_hint:None,None
-                            max_text_length:4
-                            size:70,40
-                            height: 30
-                            multiline: False
-                            pos_hint: {'center_y': 0.5}
-                            on_text: root.text_size(self)
-                    
-                        
-                    #window size
-                    MDCard:
-                        orientation:'vertical'
-                        size_hint:None,None
-                        size:240, 35
-                        md_bg_color:rgba("#101010")
-                        radius:[10]
-                        padding:[20,0]
-                        pos_hint: {'center_x': 0.5}
-
-                        MDLabel:
-                            text:"[b]Window Size[/b]"
-                            font_size:16
-                            font_name:"Comic"
-                            markup:True
-                        
+                        height:40
+                        color:rgba("#663399")
+        
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint_y:None
-                        height:100
-                        padding:[40,10]
-                        spacing:5
+                        height:200
+                        padding:[30,10]
+                        spacing:4
 
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint_y:None
-                            height:40
-                            spacing:25
+                        Button:
+                            text:"[b]Arial[/b]"
+                            font_name:"Arial"
+                            font_size:20
+                            markup:True
+                            background_color: 0,0,0,0
+                            on_release:root.font_Arial()
 
-                            MDLabel:
-                                text:"[b]width : [/b]"
-                                markup:True
-                                font_size:16
-                                size_hint_x:None
-                                width:60
-                                pos_hint: {'center_y': 0.5}
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#303030")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [15,15]
                         
-                            MDTextFieldRect:
-                                size_hint:None,None
-                                size:70,40
-                                height: 30
-                                multiline: False
-                                pos_hint: {'center_y': 0.5}
-                                on_text:root.root_win_width(self)
+                        Button:
+                            text:"[b]Comic[/b]"
+                            font_name:"Comic"
+                            font_size:20
+                            markup:True
+                            background_color: 0,0,0,0
+                            on_release:root.font_Comic()
 
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#303030")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [15,15]
                         
-                        BoxLayout:
-                            orientation: 'horizontal'
-                            size_hint_y:None
-                            height:40
-                            spacing:25
+                        Button:
+                            text:"[b]Chiller[/b]"
+                            font_name:"Chiller"
+                            font_size:20
+                            markup:True
+                            background_color: 0,0,0,0
+                            on_release:root.font_Chiller()
 
-                            MDLabel:
-                                text:"[b]height : [/b]"
-                                markup:True
-                                font_size:16
-                                size_hint_x:None
-                                width:60
-                                pos_hint: {'center_y': 0.5}
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#303030")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [15,15]
                         
-                            MDTextFieldRect:
-                                size_hint:None,None
-                                size:70,40
-                                height: 30
-                                multiline: False
-                                pos_hint: {'center_y': 0.5}
-                                on_text:root.root_win_heigt(self)
+                        Button:
+                            text:"[b]Forte[/b]"
+                            font_name:"Forte"
+                            font_size:20
+                            markup:True
+                            background_color: 0,0,0,0
+                            on_release:root.font_Forte()
 
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#303030")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [15,15]
                         
-                    # zoom   
+                        Button:
+                            text:"[b]Gabriola[/b]"
+                            font_name:"Gabriola"
+                            font_size:20
+                            markup:True
+                            background_color: 0,0,0,0
+                            on_release:root.font_Gabriola()
+
+                            canvas.before:
+                                Color:
+                                    rgba: rgba("#303030")
+                            
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [15,15]
+
+                    
+                    
+                        
+                    # zoom
                     MDCard:
                         orientation:'vertical'
                         size_hint:None,None
@@ -714,7 +645,7 @@
                         size: 100,35
                         background_color:0,0,0,0
                         pos_hint: {'center_x': 0.5,'center_y': 0.5}
-                        # on_release: root.saving_text()
+                        on_release: root.save_set()
                   
                         canvas.before:
                             Color:

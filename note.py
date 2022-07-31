@@ -17,6 +17,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 from kivy.animation import Animation
+from kivy.config import Config
 
 #other modules
 import os
@@ -26,7 +27,10 @@ sm = ScreenManager(transition = NoTransition())
 
 #window fix size
 Window.size = (630,450)
-# Window.minimum_width, Window.minimum_height = Window.size
+#winodw min size
+Window.minimum_width = 630
+Window.minimum_height = 450
+
 
 #connected to desgin file
 Builder.load_file("desgin.kv")
@@ -91,12 +95,9 @@ class Main(Screen):
 
     dialog_title = None
     dialog_new_file = None
-    dialog_save_as = None
     dialog_exit_note = None
-    dialog_find_word = None
     dialog_replace_word = None
     dialog_emoji = None
-    dialog_setting = None
     dialog_short_cut = None
     dialog_about_note = None
     dialog_save_file = None
@@ -107,22 +108,21 @@ class Main(Screen):
     def __init__(self, **kwargs):
         super(Main, self).__init__(**kwargs)
         os.chdir("D:\\sweety\\Git_learn\\project\\gui_project\\file_manager")
-
+        
+        #variabe of class main
         self.text_note = ''
-        self.title_note = 'note.txt'
+        self.title_note = ''
         self.emoji_task = False
         
         #writer board
         self.board = self.ids.note_input
-        self.board_text_color = ()
-        self.board_text_size = 0
-        self.window_height_note = 0
-        self.window_width_note = 0
-        self.board_zoom = 0
-        #create drawn
+        self.board_text_color = (0/255, 128/255, 0/255,1)
+        self.board_text_name = "Comic"
+        self.board_zoom = 20
 
+        #create drawn
         set_drawn = self.ids.setting_drawn
-        set_drawn.pos = (Window.size[0]-250,0)
+        set_drawn.pos = (Window.size[0],0)
 
     #---------------------------save-button------------------------#
 
@@ -473,13 +473,6 @@ class Main(Screen):
         
         menu_items = [
             {
-                'text':'[b]find[/b]',
-                'viewclass':'OneLineListItem',
-                'height':45,
-                'font_size':15,
-                'on_release':lambda x='find':self.find_word()
-            },
-            {
                 'text':'[b]replace[/b]',
                 'viewclass':'OneLineListItem',
                 'height':45,
@@ -504,30 +497,6 @@ class Main(Screen):
         )
 
         self.menu_edit.open()
-    
-    #-------------------------Edit >> find------------------------#
-
-    def find_save(self, btn):
-        self.dialog_find_word.dismiss()
-
-    #find word in passage
-    def find_word(self):
-
-        if not self.dialog_find_word:
-            self.dialog_find_word = MDDialog(
-                title  = "New file",
-                type='custom',
-                buttons=[
-                    MDFlatButton(
-                        text = 'save',
-                        on_release = self.find_save
-                    )
-                ]
-
-            )
-
-        #open dialog of new file
-        self.dialog_find_word.open()
     
     #-------------------------Edit >> replace------------------------#
     
@@ -584,6 +553,18 @@ class Main(Screen):
 
         self.emoji_task = False
 
+    #emoji add in writer board 
+    def emoji_text(self, emoji):
+
+        emo = emoji.text
+        self.board.text += emo
+
+    def make_emoji_btn(self, emoji_name, emoji_box, size):
+
+        emoji = Button(text = f"{emoji_name}", font_size = 25, size_hint_x =  None, width = size, pos_hint = {'center_y': 0.5}, font_name = "comic", background_color = (0,0,0,0))
+        emoji.bind(on_release = lambda x:self.emoji_text(emoji))
+        emoji_box.add_widget(emoji)
+
     #add the taskbar
     def emoji(self, *args):
 
@@ -595,12 +576,20 @@ class Main(Screen):
         scroll = ScrollView(bar_color = (0,0,0,0),bar_inactive_color = (0,0,0,0) ,do_scroll_y = False,size_hint_y = None,height = 45)
 
         #box of emoji
-        emoji_box = BoxLayout(orientation = 'horizontal', size_hint_x = None, width = 700)
-          
+
+        emoji_box = BoxLayout(orientation = 'horizontal', size_hint_x = None, width = 1800)
+        emoji_box.spacing = 20
+
+        emoji_text = [
+            " :-) ", "^_^", ":-D","(-■_■)", ":-(", ":-P", ";-)" , "(•_•)", "ಠ_ಠ", "(T_T)", 
+            " ╰(*°▽°*)╯ ", "  o('▽')o ", " (o'◡`o) ", " \_('_')_/ ", " (⊙_⊙;) ", " (¬_¬ ) "
+        ]
         #emoji in box
-        for i in range(20):
-            emoji = Button(text = "\N{winking face}", font_size = 25, size_hint_x =  None, width = 45, pos_hint = {'center_y': 0.5}, font_name = "seguiemj", background_color = (0,0,0,0))
-            emoji_box.add_widget(emoji)
+        for i in range(15):
+            if i > 8:
+                self.make_emoji_btn(emoji_text[i], emoji_box, 100)
+            else:
+                self.make_emoji_btn(emoji_text[i], emoji_box, 55)
 
         # cancel button 
         cross_btn = MDIconButton(icon = "close-circle-outline", pos_hint = {'center_y': .5})
@@ -619,29 +608,7 @@ class Main(Screen):
         elif self.emoji_task!= False:
             self.exit_emoji(emo)
 
-    #-------------------------Edit >> setting------------------------#
 
-    def setting_save(self, btn):
-        self.dialog_setting.dismiss()
-
-    #setting for note
-    def setting(self):
-
-        if not self.dialog_setting:
-            self.dialog_setting = MDDialog(
-                title  = "New file",
-                type='custom',
-                buttons=[
-                    MDFlatButton(
-                        text = 'save',
-                        on_release = self.setting_save
-                    )
-                ]
-
-            )
-
-        #open dialog of new file
-        self.dialog_setting.open()
 
     #-------------------------Help option------------------------#
     def help_menu(self, btn):
@@ -686,7 +653,7 @@ class Main(Screen):
             self.dialog_short_cut = MDDialog(
                 title="All Short Cut",
                 type="custom",
-                size_hint = (0.7, 1),
+                size_hint = (0.5, 0.5),
                 content_cls=Short_Cut_Con(),
                 buttons=[ 
                     MDFillRoundFlatButton(
@@ -724,6 +691,8 @@ class Main(Screen):
 
         self.dialog_about_note.open()
 
+    #------------------------Setting----------------------------#
+
     #drawer box for setting
 
     #open drawer box for setting
@@ -746,65 +715,52 @@ class Main(Screen):
  
     #color change in writer borad
     def red_color_text(self):
+        self.ids.text_color.color = (1,0,0,1)
         self.board_text_color = (1,0,0,1)
 
     def yel_color_text(self):
+        self.ids.text_color.color = (255/255, 215/255, 0/255,1)
         self.board_text_color = (255/255, 215/255, 0/255,1)
 
     def gre_color_text(self):
+        self.ids.text_color.color = (0/255, 128/255, 0/255,1)
         self.board_text_color = (0/255, 128/255, 0/255,1)
 
     def pur_color_text(self):
+        self.ids.text_color.color = (102/255, 51/255, 153/255, 1)
         self.board_text_color = (102/255, 51/255, 153/255, 1)
 
     def org_color_text(self):
+        self.ids.text_color.color = (255/255, 140/255, 0/255, 1)
         self.board_text_color = (255/255, 140/255, 0/255, 1)
     
-    #size change of text
+    #font change in write borad
+    def font_Arial(self):
+        self.board_text_name = "Arial"
+        self.ids.text_name.font_name = "Arial"
 
-    def text_size(self, obj):
-        self.board_text_size = ''
-        size = obj.text
-        l = len(size)
+    def font_Comic(self):
+        self.board_text_name = "Comic"
+        self.ids.text_name.font_name = "Comic"
 
-        if l<5:
-            self.board_text_size = size
-        else:
-            obj.text = size[0:4]
-            self.board_text_size =  size[0:4]
+    def font_Chiller(self):
+        self.board_text_name = "Chiller"
+        self.ids.text_name.font_name = "Chiller"
 
-    #window size 
+    def font_Forte(self):
+        self.board_text_name = "Forte"
+        self.ids.text_name.font_name = "Forte"
 
-    def root_win_heigt(self, height):
+    def font_Gabriola(self):
+        self.board_text_name = "Gabriola"
+        self.ids.text_name.font_name = "Gabriola"
 
-        self.board_text_size = ''
-        size = height.text
-        l = len(size)
-
-        if l<5:
-            self.board_text_size = size
-        else:
-            height.text = size[0:4]
-            self.board_text_size =  size[0:4]
-
-    def root_win_width(self, width):
-
-        self.board_text_size = ''
-        size = width.text
-        l = len(size)
-
-        if l<5:
-            self.board_text_size = size
-        else:
-            width.text = size[0:4]
-            self.board_text_size =  size[0:4]
-
-    #zoom
+   #zoom
 
     def zoom_max(self):
         num = int(self.ids.zoom_num.text )
 
-        num+=10
+        num+=5
 
         self.board_zoom = num
         self.ids.zoom_num.text = str(num)
@@ -812,9 +768,9 @@ class Main(Screen):
     def zoom_min(self):
         num = int(self.ids.zoom_num.text) 
 
-        num-=10
+        num-=5
 
-        if num<10:
+        if num<5:
             self.board_zoom = num
             self.ids.zoom_num.text = "10"
 
@@ -822,7 +778,37 @@ class Main(Screen):
             self.board_zoom = num
             self.ids.zoom_num.text = str(num)
         
+    #all set in setting
+    def save_set(self):
 
+        #text color
+        self.board.color = self.board_text_color
+
+        #text name
+        self.board.font_name = self.board_text_name
+
+        #zoom
+        self.board.font_size = self.board_zoom
+
+
+        #close to setting dialog
+        set_drawn = self.ids.setting_drawn
+        set_drawn.pos = (Window.size[0],0)
+
+    #------------------------------Back-Arrow--------------------#
+
+    def back_file(self):
+        file_m = sm.get_screen("file")
+
+        #clear file manager
+        m = file_m.ids.note_manager
+        m.clear_widgets()
+
+        #refresh
+        file_m.set_note()
+
+        # change screen 
+        sm.current = "file"
 
 
 #variable
@@ -1036,8 +1022,8 @@ class Note(MDApp):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Gray"
 
-        sm.add_widget(Main(name="main"))
         sm.add_widget(File_Manager(name='file'))
+        sm.add_widget(Main(name="main"))
 
         return sm
 
